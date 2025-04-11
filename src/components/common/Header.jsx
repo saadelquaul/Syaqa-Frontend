@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
-import { ChevronDown } from "lucide-react"
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)

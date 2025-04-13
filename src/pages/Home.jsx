@@ -6,6 +6,7 @@ import HowItWorks from '../components/pages/Home/How-it-works';
 import CoursesSection from '../components/pages/Home/courses-section';
 import TestimonialsSection from '../components/pages/Home/testimonials-section';
 import FaqSection from '../components/pages/Home/faq-section';
+import CtaSection from '../components/pages/Home/cta-section';
 export default function Home() {
     return (
         <>
@@ -17,6 +18,7 @@ export default function Home() {
             <CoursesSection/>
             <TestimonialsSection/>
             <FaqSection/>
+            <CtaSection/>
         </main>
         <Footer/>
         

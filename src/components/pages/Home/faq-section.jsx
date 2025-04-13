@@ -64,7 +64,7 @@ export default function FaqSection() {
 
         <div className="faq-footer">
           <p>Vous avez d&apos;autres questions ?</p>
-          <Link href="#contact" className="btn btn-secondary">
+          <Link to="contact" className="btn btn-secondary">
             Contactez-nous
           </Link>
         </div>

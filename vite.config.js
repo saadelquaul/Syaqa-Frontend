@@ -11,4 +11,9 @@ export default defineConfig({
       applyUtilities: true,
     })
   ],
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
 })

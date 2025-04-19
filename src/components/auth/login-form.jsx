@@ -1,11 +1,9 @@
 "use client"
-
-import React from "react"
-
-import { useState } from "react"
+import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
-import { useAuth } from "../../contexts/AuthContext"
+import { login } from "@/utils/auth"
+
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,16 +15,14 @@ export default function LoginForm() {
     rememberMe: false,
   })
 
-  const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }))
-    // Clear error when user starts typing
     if (errorMessage) setErrorMessage("")
   }
 
@@ -39,10 +35,6 @@ export default function LoginForm() {
       const { success, error } = await login(formData.email, formData.password)
       
       if (success) {
-        // If remember me is checked, we can handle that here
-        // (though the token is already stored in the auth service)
-        
-        // Redirect to dashboard or home page
         navigate("/dashboard")
       } else {
         setErrorMessage(error || "Échec de la connexion. Veuillez vérifier vos informations.")
@@ -57,7 +49,7 @@ export default function LoginForm() {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
-      {/* Show error message if any */}
+     
       {errorMessage && (
         <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
           <p>{errorMessage}</p>
@@ -115,20 +107,6 @@ export default function LoginForm() {
             {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         </div>
-      </div>
-
-      <div className="auth-checkbox-wrapper">
-        <input
-          id="remember-me"
-          name="rememberMe"
-          type="checkbox"
-          className="auth-checkbox"
-          checked={formData.rememberMe}
-          onChange={handleChange}
-        />
-        <label htmlFor="remember-me" className="auth-checkbox-label">
-          Se souvenir de moi
-        </label>
       </div>
 
       <button type="submit" className="auth-submit-button" disabled={isLoading}>

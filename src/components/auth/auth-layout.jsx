@@ -1,5 +1,4 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import "@/assets/styles/auth.css"
 
 
@@ -19,21 +18,6 @@ export default function AuthLayout({ children, title, subtitle, backgroundImage 
           </div>
 
           <div className="auth-card-content">{children}</div>
-        </div>
-
-        <div className="auth-footer">
-          <p className="auth-copyright">&copy; {new Date().getFullYear()} Syaqa. Tous droits réservés.</p>
-          <div className="auth-footer-links">
-            <Link href="/privacy" className="auth-footer-link">
-              Confidentialité
-            </Link>
-            <Link href="/terms" className="auth-footer-link">
-              Conditions d&apos;utilisation
-            </Link>
-            <Link href="/help" className="auth-footer-link">
-              Aide
-            </Link>
-          </div>
         </div>
       </div>
     </div>

@@ -12,21 +12,18 @@ export default function CategoryActions({ category, onDelete }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const navigate = useNavigate()
 
-  // Handle viewing category details
   const handleView = () => {
-    // Navigate to category details page
-    navigate(`/dashboard/categories/${category.id}`)
+    navigate(`/monitor/categories/${category.id}`)
     setShowMenu(false)
   }
 
-  // Handle editing a category
   const handleEdit = () => {
-    // Navigate to category edit page
-    navigate(`/dashboard/categories/${category.id}/edit`)
+    navigate(`/monitor/categories/${category.id}/edit`, {
+      state: { category }
+    })
     setShowMenu(false)
   }
 
-  // Show delete confirmation UI
   const handleDelete = () => {
     setShowConfirmDelete(true)
     setShowMenu(false)

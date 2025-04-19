@@ -4,7 +4,6 @@ import Home from '@/pages/Home';
 import LoginPage from '@/pages/Login';
 import RegisterPage from '@/pages/Register';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import DashboardCondidat from '@/pages/dashboard-condidat';
 import DashboardMoniteur from '@/pages/MonitorDashboard';
 import MonitorDashboardLayout from './components/pages/Monitor/layout';
 import CategoriesPage from './components/pages/Monitor/categories/Categories';
@@ -24,17 +23,17 @@ function App() {
               <DashboardCondidat />
             </ProtectedRoute>
           } /> */}
-          <Route path="/dashboard/home" element={
+          <Route path="/monitor/home" element={
             <MonitorDashboardLayout>
               <DashboardMoniteur />
             </MonitorDashboardLayout>
           } />
-          <Route path="/dashboard/categories" element={
+          <Route path="/monitor/categories" element={
             <MonitorDashboardLayout>
             <CategoriesPage />
           </MonitorDashboardLayout>
           }/>
-          <Route path="/dashboard/categories/create" element={
+          <Route path="/monitor/categories/create" element={
             <MonitorDashboardLayout>
             <CreateCategoryPage />
           </MonitorDashboardLayout>

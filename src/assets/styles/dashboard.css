@@ -373,12 +373,6 @@
   background-color: #f8fafc;
 }
 
-/* Page Content */
-.dashboard-page {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
 .page-header {
   display: flex;
   align-items: center;

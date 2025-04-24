@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState, useEffect } from "react"
 import { ArrowLeft, Edit } from "lucide-react"
 import { Link, useParams } from "react-router-dom"

@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState, useEffect } from "react"
 import { ArrowLeft, ImageIcon, AlertCircle } from "lucide-react"
 import { Link, useNavigate, useParams } from "react-router-dom"

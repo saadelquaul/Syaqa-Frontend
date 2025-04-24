@@ -1,70 +1,144 @@
 "use client"
 
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Modal } from "@/components/ui/modal"
-import { MoreHorizontal, Edit, Trash2, Eye } from "lucide-react"
+import { useState, useEffect, useCallback } from "react"
+import { MoreVertical, Edit, Trash, Check, X, Eye } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { getAuthHeader } from "@/utils/auth"
 
-export default function CourseActions({ courseId }) {
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+export default function CourseActions({ course, onDelete }) {
+  const [showMenu, setShowMenu] = useState(false)
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const navigate = useNavigate()
 
-  const handleDelete = () => {
-    console.log(`Deleting course ${courseId}`)
-    setShowDeleteModal(false)
+  const handleView = () => {
+    navigate(`/monitor/courses/${course.id}`)
+    setShowMenu(false)
   }
 
-  return (
-    <div className="actions-dropdown">
-      <Button variant="ghost" size="icon" onClick={() => setShowDropdown(!showDropdown)} aria-label="Actions">
-        <MoreHorizontal className="h-4 w-4" />
-      </Button>
+  const handleEdit = () => {
+    navigate(`/monitor/courses/${course.id}/edit`)
+    setShowMenu(false)
+  }
 
-      {showDropdown && (
-        <div className="dropdown-menu actions-menu">
-          <Link to={`/monitor/courses/${courseId}`} className="dropdown-item"> {/* Changed from href to to */}
-            <Eye className="dropdown-icon" />
-            <span>Voir</span>
-          </Link>
-          <Link to={`/monitor/courses/${courseId}/edit`} className="dropdown-item"> {/* Changed from href to to */}
-            <Edit className="dropdown-icon" />
-            <span>Modifier</span>
-          </Link>
+  const handleDelete = () => {
+    setShowConfirmDelete(true)
+    setShowMenu(false)
+  }
+
+  const confirmDelete = async () => {
+    try {
+      setIsDeleting(true)
+      
+      
+      await axios.delete(`http://localhost:8000/api/courses/${course.id}`, {
+        headers: getAuthHeader()
+      })
+      
+      
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      if (onDelete) {
+        onDelete(course.id)
+      } else {
+        window.location.reload()
+      }
+      
+    } catch (error) {
+      console.error("Failed to delete course:", error)
+      alert("Impossible de supprimer le cours. Veuillez réessayer.")
+    } finally {
+      setIsDeleting(false)
+      setShowConfirmDelete(false)
+    }
+  }
+
+  const cancelDelete = () => {
+    setShowConfirmDelete(false)
+  }
+
+  const handleClickOutside = useCallback(() => {
+      if (showMenu) {
+        setShowMenu(false)
+      }
+    }, [showMenu]);
+
+  useEffect(() => {
+    if (showMenu) {
+      document.addEventListener('click', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [showMenu, handleClickOutside])
+
+  return (
+    <div >
+      {showConfirmDelete ? (
+        <div className="flex items-center space-x-2">
           <button
-            className="dropdown-item text-red-600"
-            onClick={() => {
-              setShowDropdown(false)
-              setShowDeleteModal(true)
-            }}
+            onClick={confirmDelete}
+            className="p-1 text-green-600 hover:text-green-800"
+            title="Confirmer la suppression"
+            disabled={isDeleting}
           >
-            <Trash2 className="dropdown-icon" />
-            <span>Supprimer</span>
+            {isDeleting ? (
+              <div className="w-4 h-4 border-2 border-t-2 border-green-600 rounded-full animate-spin" />
+            ) : (
+              <Check size={18} />
+            )}
+          </button>
+          <button 
+            onClick={cancelDelete} 
+            className="p-1 text-red-600 hover:text-red-800" 
+            title="Annuler"
+            disabled={isDeleting}
+          >
+            <X size={18} />
           </button>
         </div>
-      )}
+      ) : (
+        <>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowMenu(!showMenu);
+            }} 
+            className="p-1 text-gray-500 hover:text-gray-700"
+          >
+            <MoreVertical size={18} />
+          </button>
 
-      <Modal
-        isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        title="Confirmer la suppression"
-        description="Êtes-vous sûr de vouloir supprimer ce cours ? Cette action est irréversible."
-        footer={
-          <div className="flex justify-end space-x-2">
-            <Button variant="ghost" onClick={() => setShowDeleteModal(false)}>
-              Annuler
-            </Button>
-            <Button variant="danger" onClick={handleDelete}>
-              Supprimer
-            </Button>
-          </div>
-        }
-      >
-        <p>
-          La suppression de ce cours entraînera la perte de toutes les données associées, y compris les statistiques et
-          les commentaires des étudiants.
-        </p>
-      </Modal>
+          {showMenu && (
+            <div className="absolute right-5 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+              <div className="py-1">
+                <button
+                  onClick={handleView}
+                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                >
+                  <Eye size={16} className="mr-2" />
+                  Voir les détails
+                </button>
+                <button
+                  onClick={handleEdit}
+                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                >
+                  <Edit size={16} className="mr-2" />
+                  Modifier
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left"
+                >
+                  <Trash size={16} className="mr-2" />
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }

@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect, useCallback } from "react"
 import { MoreVertical, Edit, Trash, Check, X, Eye } from "lucide-react"
 import { useNavigate } from "react-router-dom"
@@ -72,7 +70,7 @@ export default function CategoryActions({ category, onDelete }) {
   }, [showMenu, handleClickOutside])
 
   return (
-    <div >
+    <div className="relative">
       {showConfirmDelete ? (
         <div className="flex items-center space-x-2">
           <button

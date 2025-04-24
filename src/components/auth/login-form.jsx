@@ -1,4 +1,3 @@
-"use client"
 import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
@@ -35,7 +34,7 @@ export default function LoginForm() {
       const { success, error } = await login(formData.email, formData.password)
       
       if (success) {
-        navigate("/dashboard")
+        navigate("/monitor/home")
       } else {
         setErrorMessage(error || "Échec de la connexion. Veuillez vérifier vos informations.")
       }

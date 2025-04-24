@@ -1,4 +1,3 @@
-"use client"
 import React, { useState, useRef } from "react"
 import { User, Mail, Lock, Eye, EyeOff, Upload, Check, AlertCircle, Calendar, MapPin, Phone, Car, CheckCircle } from "lucide-react"
 import { useNavigate } from "react-router-dom"

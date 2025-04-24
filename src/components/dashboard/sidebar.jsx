@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useLocation } from "react-router-dom"
@@ -54,13 +52,7 @@ export default function DashboardSidebar() {
         <div className="sidebar-header">
           <Link to="/
           " className="sidebar-logo-link">
-            <img
-              src="/placeholder.svg?height=40&width=120"
-              alt="Syaqa Logo"
-              width={120}
-              height={40}
-              className="sidebar-logo"
-            />
+          <h1 className="text-3xl"><span className="text-[#F97316]">S</span>YAQA</h1>
           </Link>
           <button
             className="sidebar-collapse-btn"

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
+import Logo from "@/assets/images/syaqa.ico"
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -31,7 +32,7 @@ export default function Header() {
       <div className="container">
         <div className="logo-container">
           <Link to="/" className="logo">
-            <img src="/placeholder.svg" alt="Syaqa" className="w-[120px] h-[40px]" />
+          <h1 className="text-3xl"><span className="text-[#F97316]">S</span>YAQA</h1>
           </Link>
         </div>
 

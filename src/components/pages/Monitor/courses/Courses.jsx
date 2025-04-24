@@ -1,70 +1,56 @@
-"use client"
-
 import { useState } from "react"
-import Link from "next/link"
+import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select } from "@/components/ui/select"
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
 import { Plus, Search, Filter } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import CourseActions from "@/components/dashboard/course-actions"
-
-// Mock data for courses
-const mockCourses = [
-  {
-    id: "1",
-    title: "Code de la route complet",
-    category: "Théorie",
-    status: "published",
-    students: 156,
-    lastUpdated: "2023-11-15",
-  },
-  {
-    id: "2",
-    title: "Techniques de conduite essentielles",
-    category: "Pratique",
-    status: "published",
-    students: 89,
-    lastUpdated: "2023-11-10",
-  },
-  {
-    id: "3",
-    title: "Préparation à l'examen pratique",
-    category: "Examen",
-    status: "draft",
-    students: 0,
-    lastUpdated: "2023-11-18",
-  },
-  {
-    id: "4",
-    title: "Conduite en ville",
-    category: "Pratique",
-    status: "published",
-    students: 42,
-    lastUpdated: "2023-10-25",
-  },
-  {
-    id: "5",
-    title: "Conduite sur autoroute",
-    category: "Pratique",
-    status: "draft",
-    students: 0,
-    lastUpdated: "2023-11-05",
-  },
-]
+import axios from "axios"
+import { getAuthHeader } from "@/utils/auth"
+import { useEffect } from "react"
 
 export default function CoursesPage() {
-  // State for search and filters
   const [searchQuery, setSearchQuery] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("")
   const [statusFilter, setStatusFilter] = useState("")
+  const [courses, setCourses] = useState([])
+  const [categories, setCategories] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
-  // Filter courses based on search query and filters
-  const filteredCourses = mockCourses.filter((course) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true)
+        
+        const categoriesResponse = await axios.get('http://localhost:8000/api/categories', {
+          headers: getAuthHeader()
+        })
+        const categoriesData = categoriesResponse.data.data || []
+        setCategories(categoriesData)
+        
+        const coursesResponse = await axios.get('http://localhost:8000/api/monitor/courses', {
+          headers: getAuthHeader()
+        })
+        
+        setCourses(coursesResponse.data.courses)
+        
+      } catch (err) {
+        console.error("Failed to fetch data:", err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    fetchData()
+  }, [])
+
+  const handleDeleteCourse = (courseId) => {
+    setCourses(prevCourses => prevCourses.filter(course => course.id !== courseId))
+  }
+
+  const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = categoryFilter ? course.category === categoryFilter : true
+    const matchesCategory = categoryFilter ? course.category_name === categoryFilter : true
     const matchesStatus = statusFilter ? course.status === statusFilter : true
     return matchesSearch && matchesCategory && matchesStatus
   })
@@ -73,8 +59,8 @@ export default function CoursesPage() {
     <div className="dashboard-page">
       <div className="page-header">
         <h1 className="dashboard-title">Gestion des cours</h1>
-        <Link href="/monitor/courses/create">
-          <Button leftIcon={<Plus className="h-4 w-4" />}>Ajouter un cours</Button>
+        <Link to="/monitor/courses/create">
+          <Button className="btn-primary" leftIcon={<Plus className="h-4 w-4" />}>Ajouter un cour</Button>
         </Link>
       </div>
 
@@ -83,7 +69,6 @@ export default function CoursesPage() {
           <CardTitle>Mes cours</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Search and filters */}
           <div className="filters-container">
             <div className="search-container">
               <Search className="search-icon" />
@@ -95,75 +80,79 @@ export default function CoursesPage() {
               />
             </div>
             <div className="filters">
-              <Select
-                options={[
-                  { value: "", label: "Toutes les catégories" },
-                  { value: "Théorie", label: "Théorie" },
-                  { value: "Pratique", label: "Pratique" },
-                  { value: "Examen", label: "Examen" },
-                ]}
+              <select 
+                className="px-3 py-2 border rounded-md"
                 value={categoryFilter}
-                onChange={(value) => setCategoryFilter(value)}
-                leftIcon={<Filter className="h-4 w-4" />}
-              />
-              <Select
-                options={[
-                  { value: "", label: "Tous les statuts" },
-                  { value: "published", label: "Publié" },
-                  { value: "draft", label: "Brouillon" },
-                ]}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+              >
+                <option value="">Toutes les catégories</option>
+                {categories.map(category => (
+                  <option key={category.id} value={category.name}>{category.name}</option>
+                ))}
+              </select>
+              
+              <select
+                className="px-3 py-2 border rounded-md"
                 value={statusFilter}
-                onChange={(value) => setStatusFilter(value)}
-                leftIcon={<Filter className="h-4 w-4" />}
-              />
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="">Tous les statuts</option>
+                <option value="active">Publié</option>
+                <option value="inactive">Brouillon</option>
+              </select>
             </div>
           </div>
 
-          {/* Courses table */}
-          <div className="table-container">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Titre</TableHead>
-                  <TableHead>Catégorie</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead>Étudiants</TableHead>
-                  <TableHead>Dernière mise à jour</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredCourses.map((course) => (
-                  <TableRow key={course.id}>
-                    <TableCell className="font-medium">{course.title}</TableCell>
-                    <TableCell>{course.category}</TableCell>
-                    <TableCell>
-                      <Badge variant={course.status === "published" ? "success" : "warning"}>
-                        {course.status === "published" ? "Publié" : "Brouillon"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{course.students}</TableCell>
-                    <TableCell>{course.lastUpdated}</TableCell>
-                    <TableCell>
-                      <CourseActions courseId={course.id} />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          
+          {isLoading ? (
+            <div className="text-center py-10">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent mb-4"></div>
+              <p>Chargement des cours...</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catégorie</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Étudiants</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dernière mise à jour</th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredCourses.map((course) => (
+                    <tr key={course.id}>
+                      <td className="px-6 py-4 whitespace-nowrap font-medium">{course.title}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{course.category_name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          course.status === "active" 
+                            ? "bg-green-100 text-green-800" 
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}>
+                          {course.status === "active" ? "Publié" : "Brouillon"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">{course.students_count}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{new Date(course.updated_at).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right">
+                        <CourseActions course={course} onDelete={handleDeleteCourse} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
 
-            {/* Empty state when no courses match filters */}
-            {filteredCourses.length === 0 && (
-              <div className="empty-state">
-                <p>Aucun cours trouvé. Veuillez ajuster vos filtres ou créer un nouveau cours.</p>
-                <Link href="/monitor/courses/create">
-                  <Button variant="outline" leftIcon={<Plus className="h-4 w-4" />}>
-                    Ajouter un cours
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </div>
+              {filteredCourses.length === 0 && (
+                <div className="text-center py-10">
+                  <p className="mb-4">Aucun cours trouvé. Veuillez ajuster vos filtres ou créer un nouveau cours.</p>
+                </div>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

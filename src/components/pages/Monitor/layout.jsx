@@ -1,29 +1,36 @@
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import DashboardSidebar from "@/components/dashboard/sidebar"
-import DashboardHeader from "@/components/dashboard/header"
-import "@/assets/styles/dashboard.css"
+import { useAuth } from "@/hooks/useAuth";
+import { Navigate } from "react-router-dom";
+import DashboardSidebar from "@/components/dashboard/sidebar";
+import DashboardHeader from "@/components/dashboard/header";
+import "@/assets/styles/dashboard.css";
 
-const isAuthenticated = () => {
-  return true
-}
 export default function MonitorDashboardLayout({ children }) {
-  const navigate = useNavigate();
+  const { user, isLoading, error } = useAuth();
   
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate("/login");
-    }
-  }, [navigate]);
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent mb-4"></div>
+        <span className="ml-2">Chargement...</span>
+      </div>
+    );
+  }
   
+  if (error || !user) {
+    return <Navigate to="/login" replace />;
+  }
 
+  if(user.role !== "monitor") {
+    return <Navigate to="/" replace />;
+  }
+  
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-layout">
       <DashboardSidebar />
       <div className="dashboard-content">
-        <DashboardHeader />
+        <DashboardHeader user={user}/>
         <main className="dashboard-main">{children}</main>
       </div>
     </div>
-  )
+  );
 }

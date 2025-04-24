@@ -58,11 +58,18 @@ export async function register(userData) {
   }
 }
 
-export function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+export async function logout() {
 
-  window.location.href = '/login';
+ const response = await axios.post(`${API_URL}/logout`, {}, {
+    headers: getAuthHeader()
+  });
+  if( response.status === 200) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  
+    window.location.href = '/login';
+  }
+  
 }
 
 export function isLoggedIn() {

@@ -19,6 +19,14 @@ import CoursesPage from './components/pages/Monitor/courses/Courses';
 import CreateCoursePage from './components/pages/Monitor/courses/Create';
 import EditCoursePage from './components/pages/Monitor/courses/Edit';
 import CourseDetailsPage from './components/pages/Monitor/courses/Details';
+
+import AdminCategoriesPage from './components/pages/Monitor/categories/Categories';
+import AdminCoursesPage from './components/pages/Monitor/courses/Courses';
+import AdminUsersPage from '@/components/pages/Admin/users/Users';
+import PendingUsersPage from '@/components/pages/Admin/users/PendingUsers';
+
+import AdminDashboardLayout from '@/components/pages/Admin/layout';
+import AdminDashboard from '@/pages/AdminDashboard';
 function App() {
   return (
 
@@ -78,6 +86,33 @@ function App() {
           <MonitorDashboardLayout>
             <CourseDetailsPage />
           </MonitorDashboardLayout>
+        } />
+
+
+<Route path="/admin/home" element={
+          <AdminDashboardLayout>
+            <AdminDashboard />
+          </AdminDashboardLayout>
+        } />
+        <Route path="/admin/users" element={
+          <AdminDashboardLayout>
+            <AdminUsersPage />
+          </AdminDashboardLayout>
+        } />
+        <Route path="/admin/pending-users" element={
+          <AdminDashboardLayout>
+            <PendingUsersPage />
+          </AdminDashboardLayout>
+        } />
+        <Route path="/admin/categories" element={
+          <AdminDashboardLayout>
+            <AdminCategoriesPage />
+          </AdminDashboardLayout>
+        } />
+        <Route path="/admin/courses" element={
+          <AdminDashboardLayout>
+            <AdminCoursesPage />
+          </AdminDashboardLayout>
         } />
       </Routes>
     </Router>

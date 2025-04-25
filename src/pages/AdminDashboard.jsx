@@ -22,9 +22,10 @@ export default function AdminDashboard() {
         setIsLoading(true);
         
         const response = await axios.get("http://localhost:8000/api/admin/dashboard", {
-          headers: getAuthHeader()
+          headers: {
+            ...getAuthHeader()
+        }
         });
-        
         const data = response.data;
         setStats({
           usersCount: data.users_count || 0,

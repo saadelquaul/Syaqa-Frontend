@@ -35,7 +35,7 @@ export async function register(userData) {
     formData.append('address', userData.address);
     formData.append('phone', userData.phone);
     formData.append('license_type', userData.license_type);
-    
+    formData.append('profile_picture', `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 100) + 1}`);
     formData.append('enrollment_date', userData.enrollment_date);
     formData.append('CIN', userData.cin_file);
 

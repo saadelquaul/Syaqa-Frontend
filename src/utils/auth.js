@@ -47,9 +47,10 @@ export async function register(userData) {
     const response = await axios.post(`${API_URL}/register`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-    console.log(response.data);
+
     return { success: true, data: response.data };
   } catch (error) {
+    console.error("Registration error:", error.response?.data);
     return { 
       success: false, 
       error: error.response?.data?.message || "L'inscription a échoué",

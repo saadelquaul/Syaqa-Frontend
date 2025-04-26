@@ -110,7 +110,7 @@ export default function RegisterForm() {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-
+   
     if (age < 18) {
       setValidationErrors(prev => ({ ...prev, date_of_birth: ["Vous devez avoir au moins 18 ans pour vous inscrire."] }));
       return;

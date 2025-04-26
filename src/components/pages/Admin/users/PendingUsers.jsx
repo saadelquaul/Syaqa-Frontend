@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Filter, CheckCircle, XCircle } from "lucide-react";
+import { Search, RefreshCw, Filter, CheckCircle, XCircle, Eye, X, User, Phone, Calendar, MapPin, FileText, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +12,10 @@ export default function PendingUsersPage() {
   const [roleFilter, setRoleFilter] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [Refrecher, setRefrecher] = useState(false);
 
   useEffect(() => {
     const fetchPendingUsers = async () => {
@@ -21,9 +25,8 @@ export default function PendingUsersPage() {
           headers: getAuthHeader()
         });
         setPendingUsers(response.data.users || []);
-        console.log(response.data.users);
       } catch (err) {
-        console.error("Failed to fetch pending users:", err);
+        console.error("Failed to fetch monitor users:", err);
         setError("Impossible de charger les utilisateurs en attente");
       } finally {
         setIsLoading(false);
@@ -31,15 +34,29 @@ export default function PendingUsersPage() {
     };
     
     fetchPendingUsers();
-  }, []);
+  }, [Refrecher]);
+
+  const handleViewDetails = async (id) => {
+    
+    try {
+      const response = await axios.get(`http://localhost:8000/api/admin/users/${id}`, {
+        headers: getAuthHeader()
+      });
+      setSelectedUser(response.data.user);
+      setShowDetailsModal(true);
+    } catch (err) {
+      console.error("Failed to fetch user details:", err);
+      alert("Erreur lors du chargement des détails de l'utilisateur");
+    }
+  };
+
 
   const handleApprove = async (id) => {
     try {
-      await axios.post(`http://localhost:8000/api/admin/users/${id}/approve`, {}, {
+      await axios.post(`http://localhost:8000/api/admin/condidate/${id}/approve`, {}, {
         headers: getAuthHeader()
       });
       
-      // Remove the approved user from the list
       setPendingUsers(prev => prev.filter(user => user.id !== id));
     } catch (err) {
       console.error("Failed to approve user:", err);
@@ -49,11 +66,10 @@ export default function PendingUsersPage() {
   
   const handleReject = async (id) => {
     try {
-      await axios.post(`http://localhost:8000/api/admin/users/${id}/reject`, {}, {
+      await axios.post(`http://localhost:8000/api/admin/condidate/${id}/reject`, {}, {
         headers: getAuthHeader()
       });
       
-      // Remove the rejected user from the list
       setPendingUsers(prev => prev.filter(user => user.id !== id));
     } catch (err) {
       console.error("Failed to reject user:", err);
@@ -78,7 +94,9 @@ export default function PendingUsersPage() {
 
       <Card className="dashboard-card">
         <CardHeader>
-          <CardTitle>Demandes d'inscription</CardTitle>
+          <CardTitle className="flex justify-between">Demandes d'inscription 
+            <RefreshCw className="cursor-pointer hover:scale-120 transition" onClick={()=> setRefrecher(!Refrecher)}/>
+            </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="filters-container">
@@ -134,9 +152,10 @@ export default function PendingUsersPage() {
                             <img 
                               src={
                                 user.profile_picture ? 
-                    user.profile_picture.startsWith('https://avatar.iran.liara.run')
-                  ? user.profile_picture: `http://localhost:8000/storage/${user.profile_picture}` : 'https://avatar.iran.liara.run/public'
-    
+                                  user.profile_picture.startsWith('https://avatar.iran.liara.run')
+                                    ? user.profile_picture
+                                    : `http://localhost:8000/storage/${user.profile_picture}` 
+                                  : `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 100) + 1}`
                               } 
                               alt={user.user.name} 
                               className="h-full w-full object-cover"
@@ -149,8 +168,7 @@ export default function PendingUsersPage() {
                         </div>
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold capitalize rounded-full bg-blue-100 text-blue-800
-                        ">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold capitalize rounded-full bg-blue-100 text-blue-800">
                           {user.user.role}
                         </span>
                       </td>
@@ -159,6 +177,15 @@ export default function PendingUsersPage() {
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex justify-end gap-2">
+                          <Button 
+                            size="sm" 
+                            className="bg-blue-500 hover:bg-blue-600 inline-flex items-center"
+                            onClick={() => handleViewDetails(user.user_id)}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            Détails
+                          </Button>
+                          
                           <Button 
                             size="sm" 
                             className="bg-green-500 hover:bg-green-600 inline-flex items-center"
@@ -185,6 +212,188 @@ export default function PendingUsersPage() {
           )}
         </CardContent>
       </Card>
+
+      {
+      showDetailsModal && selectedUser &&  (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center border-b p-4">
+              <h2 className="text-xl font-semibold">Détails de l'utilisateur</h2>
+              <button 
+                onClick={() => setShowDetailsModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <div className="flex flex-col md:flex-row gap-6 mb-8">
+                <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex-shrink-0 mx-auto md:mx-0">
+                  <img 
+                    src={
+                      selectedUser.candidate.profile_picture ? 
+                        selectedUser.candidate.profile_picture.startsWith('https://avatar.iran.liara.run')
+                          ? selectedUser.candidate.profile_picture
+                          : `http://localhost:8000/storage/${selectedUser.profile_picture}` 
+                        : 'https://avatar.iran.liara.run/public'
+                    } 
+                    alt={selectedUser.name} 
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                
+                <div className="flex-grow text-center md:text-left">
+                  <h3 className="text-2xl font-bold">{selectedUser.name}</h3>
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 mt-2 text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <User size={16} />
+                      <span className="capitalize">{selectedUser.role}</span>
+                    </div>
+                    <span className="hidden md:block">•</span>
+                    <div className="flex items-center gap-1">
+                      <span>{selectedUser.email}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      selectedUser.candidate.status === 'active' ? 'bg-green-100 text-green-800' : 
+                      selectedUser.candidate.status === 'inactive' ? 'bg-yellow-100 text-yellow-800' : 
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {selectedUser.candidate.status === 'active' ? 'Actif' : 
+                       selectedUser.candidate.status === 'inactive' ? 'En attente' : 'Rejeté'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mb-8">
+                <h4 className="text-lg font-semibold border-b pb-2 mb-4">Informations personnelles</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {selectedUser.candidate.phone_number && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="text-gray-500" size={18} />
+                      <div>
+                        <div className="text-sm text-gray-500">Téléphone</div>
+                        <div>{selectedUser.candidate.phone_number}</div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {selectedUser.candidate.date_of_birth && (
+                    <div className="flex items-center gap-2">
+                      <Calendar className="text-gray-500" size={18} />
+                      <div>
+                        <div className="text-sm text-gray-500">Date de naissance</div>
+                        <div>{new Date(selectedUser.candidate.date_of_birth).toLocaleDateString('fr-FR')}</div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {selectedUser.candidate.address && (
+                    <div className="flex items-start gap-2 col-span-1 md:col-span-2">
+                      <MapPin className="text-gray-500 mt-1" size={18} />
+                      <div>
+                        <div className="text-sm text-gray-500">Adresse</div>
+                        <div>{selectedUser.candidate.address}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {selectedUser.role === 'candidate' && selectedUser.candidate && (
+                <div className="mb-8">
+                  <h4 className="text-lg font-semibold border-b pb-2 mb-4">Informations du candidat</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {selectedUser.candidate.license_type && (
+                      <div className="flex items-center gap-2">
+                        <Car className="text-gray-500" size={18} />
+                        <div>
+                          <div className="text-sm text-gray-500">Type de permis</div>
+                          <div>{selectedUser.candidate.license_type}</div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {selectedUser.candidate.enrollment_date && (
+                      <div className="flex items-center gap-2">
+                        <Calendar className="text-gray-500" size={18} />
+                        <div>
+                          <div className="text-sm text-gray-500">Date d'inscription</div>
+                          <div>{new Date(selectedUser.candidate.enrollment_date).toLocaleDateString('fr-FR')}</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              {selectedUser.role === 'candidate' && selectedUser.candidate.document.CIN && (
+                <div className="mb-8">
+                  <h4 className="text-lg font-semibold border-b pb-2 mb-4">Documents</h4>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="border rounded-lg overflow-hidden">
+                      <div className="p-3 bg-gray-50 border-b flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <FileText size={16} />
+                          <span>CIN</span>
+                        </div>
+                        <a
+                          href={`http://localhost:8000/storage/${selectedUser.candidate.document.CIN}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          Télécharger
+                        </a>
+                      </div>
+                      <div className="p-2">
+                        <img 
+                          src={`http://localhost:8000/storage/${selectedUser.candidate.document.CIN}`}
+                          alt="CIN"
+                          className="max-h-48 object-contain mx-auto"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-6 border-t">
+                <Button 
+                  className="bg-green-500 hover:bg-green-600"
+                  onClick={() => {
+                    handleApprove(selectedUser.candidate.id);
+                    setShowDetailsModal(false);
+                  }}
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Approuver
+                </Button>
+                <Button 
+                  className="bg-red-500 hover:bg-red-600"
+                  onClick={() => {
+                    handleReject(selectedUser.candidate.id);
+                    setShowDetailsModal(false);
+                  }}
+                >
+                  <XCircle className="h-4 w-4 mr-2" />
+                  Rejeter
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => setShowDetailsModal(false)}
+                >
+                  Fermer
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

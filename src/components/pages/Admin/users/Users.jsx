@@ -62,6 +62,7 @@ export default function AdminUsersPage() {
   };
 
   const filteredUsers = users.filter(user => {
+
     const matchesSearch = 
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
       user.email.toLowerCase().includes(searchQuery.toLowerCase());
@@ -146,9 +147,11 @@ export default function AdminUsersPage() {
                         <div className="flex items-center">
                           <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
                             <img 
-                              src={user.profile_picture 
-                                ? `http://localhost:8000/storage/${user.profile_picture}` 
-                                : "/placeholder.svg"
+                              src={user.role === 'admin' ?  'https://avatar.iran.liara.run/public/job/operator/male'
+                                : user.role === 'candidate' ? user.candidate.profile_picture.startsWith('https://avatar.iran.liara.run') ?
+                                user.candidate.profile_picture :  `http://localhost:8000/storage/${user.candidate.profile_picture}` :
+                               user.monitor ? `http://localhost:8000/storage/${user.monitor.profile_picture}` :
+                                'https://avatar.iran.liara.run/public'
                               } 
                               alt={user.name} 
                               className="h-full w-full object-cover"

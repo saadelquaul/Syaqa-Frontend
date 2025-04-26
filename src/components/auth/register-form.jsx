@@ -452,7 +452,7 @@ export default function RegisterForm() {
             </div>
           </div>
         </div>
-        <p className="auth-input-hint">Formats acceptés: JPG, PNG, JEPG (max 5MB)</p>
+        <p className="auth-input-hint">Formats acceptés: JPG, PNG, JEPG (max 2MB)</p>
         {getFieldError("cin_file")}
       </div>
 

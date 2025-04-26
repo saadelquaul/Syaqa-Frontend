@@ -24,6 +24,7 @@ export default function PendingUsersPage() {
         const response = await axios.get('http://localhost:8000/api/admin/pending-users', {
           headers: getAuthHeader()
         });
+        
         setPendingUsers(response.data.users || []);
       } catch (err) {
         console.error("Failed to fetch monitor users:", err);
@@ -79,9 +80,9 @@ export default function PendingUsersPage() {
 
   const filteredUsers = pendingUsers.filter(user => {
     const matchesSearch = 
-      user.user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      user.user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = roleFilter ? user.user.role === roleFilter : true;
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      user.email.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesRole = roleFilter ? user.role === roleFilter : true;
     
     return matchesSearch && matchesRole;
   });
@@ -157,19 +158,19 @@ export default function PendingUsersPage() {
                                     : `http://localhost:8000/storage/${user.profile_picture}` 
                                   : `https://avatar.iran.liara.run/public/${Math.floor(Math.random() * 100) + 1}`
                               } 
-                              alt={user.user.name} 
+                              alt={user.name} 
                               className="h-full w-full object-cover"
                             />
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{user.user.name}</div>
-                            <div className="text-sm text-gray-500">{user.user.email}</div>
+                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                            <div className="text-sm text-gray-500">{user.email}</div>
                           </div>
                         </div>
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold capitalize rounded-full bg-blue-100 text-blue-800">
-                          {user.user.role}
+                          {user.role}
                         </span>
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap text-sm text-gray-500">
@@ -180,7 +181,7 @@ export default function PendingUsersPage() {
                           <Button 
                             size="sm" 
                             className="bg-blue-500 hover:bg-blue-600 inline-flex items-center"
-                            onClick={() => handleViewDetails(user.user_id)}
+                            onClick={() => handleViewDetails(user.id)}
                           >
                             <Eye className="h-4 w-4 mr-1" />
                             Détails
@@ -232,9 +233,9 @@ export default function PendingUsersPage() {
                 <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex-shrink-0 mx-auto md:mx-0">
                   <img 
                     src={
-                      selectedUser.candidate.profile_picture ? 
-                        selectedUser.candidate.profile_picture.startsWith('https://avatar.iran.liara.run')
-                          ? selectedUser.candidate.profile_picture
+                      selectedUser.profile_picture ? 
+                        selectedUser.profile_picture.startsWith('https://avatar.iran.liara.run')
+                          ? selectedUser.profile_picture
                           : `http://localhost:8000/storage/${selectedUser.profile_picture}` 
                         : 'https://avatar.iran.liara.run/public'
                     } 
@@ -258,12 +259,12 @@ export default function PendingUsersPage() {
                   
                   <div className="mt-4">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      selectedUser.candidate.status === 'active' ? 'bg-green-100 text-green-800' : 
-                      selectedUser.candidate.status === 'inactive' ? 'bg-yellow-100 text-yellow-800' : 
+                      selectedUser.status === 'active' ? 'bg-green-100 text-green-800' : 
+                      selectedUser.status === 'inactive' ? 'bg-yellow-100 text-yellow-800' : 
                       'bg-red-100 text-red-800'
                     }`}>
-                      {selectedUser.candidate.status === 'active' ? 'Actif' : 
-                       selectedUser.candidate.status === 'inactive' ? 'En attente' : 'Rejeté'}
+                      {selectedUser.status === 'active' ? 'Actif' : 
+                       selectedUser.status === 'inactive' ? 'En attente' : 'Rejeté'}
                     </span>
                   </div>
                 </div>
@@ -272,32 +273,32 @@ export default function PendingUsersPage() {
               <div className="mb-8">
                 <h4 className="text-lg font-semibold border-b pb-2 mb-4">Informations personnelles</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {selectedUser.candidate.phone_number && (
+                  {selectedUser.phone_number && (
                     <div className="flex items-center gap-2">
                       <Phone className="text-gray-500" size={18} />
                       <div>
                         <div className="text-sm text-gray-500">Téléphone</div>
-                        <div>{selectedUser.candidate.phone_number}</div>
+                        <div>{selectedUser.phone_number}</div>
                       </div>
                     </div>
                   )}
                   
-                  {selectedUser.candidate.date_of_birth && (
+                  {selectedUser.date_of_birth && (
                     <div className="flex items-center gap-2">
                       <Calendar className="text-gray-500" size={18} />
                       <div>
                         <div className="text-sm text-gray-500">Date de naissance</div>
-                        <div>{new Date(selectedUser.candidate.date_of_birth).toLocaleDateString('fr-FR')}</div>
+                        <div>{new Date(selectedUser.date_of_birth).toLocaleDateString('fr-FR')}</div>
                       </div>
                     </div>
                   )}
                   
-                  {selectedUser.candidate.address && (
+                  {selectedUser.address && (
                     <div className="flex items-start gap-2 col-span-1 md:col-span-2">
                       <MapPin className="text-gray-500 mt-1" size={18} />
                       <div>
                         <div className="text-sm text-gray-500">Adresse</div>
-                        <div>{selectedUser.candidate.address}</div>
+                        <div>{selectedUser.address}</div>
                       </div>
                     </div>
                   )}
@@ -366,7 +367,7 @@ export default function PendingUsersPage() {
                 <Button 
                   className="bg-green-500 hover:bg-green-600"
                   onClick={() => {
-                    handleApprove(selectedUser.candidate.id);
+                    handleApprove(selectedUser.id);
                     setShowDetailsModal(false);
                   }}
                 >
@@ -376,7 +377,7 @@ export default function PendingUsersPage() {
                 <Button 
                   className="bg-red-500 hover:bg-red-600"
                   onClick={() => {
-                    handleReject(selectedUser.candidate.id);
+                    handleReject(selectedUser.id);
                     setShowDetailsModal(false);
                   }}
                 >
@@ -385,6 +386,7 @@ export default function PendingUsersPage() {
                 </Button>
                 <Button 
                   variant="outline"
+                  className="text-gray-500 hover:text-black  border-gray-300"
                   onClick={() => setShowDetailsModal(false)}
                 >
                   Fermer

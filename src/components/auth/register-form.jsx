@@ -234,7 +234,7 @@ export default function RegisterForm() {
       )}
 
 {!isSuccess && (
-        <>
+        <div className="grid grid-cols-1  gap-4 md:grid-cols-2 md:gap-6"> 
       <div className="auth-form-group">
         <label htmlFor="fullName" className="auth-label">
           Nom complet
@@ -478,7 +478,7 @@ export default function RegisterForm() {
           "S'inscrire"
         )}
       </button>
-      </>
+      </div>
       )}
     </form>
   )

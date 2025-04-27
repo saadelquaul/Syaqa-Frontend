@@ -39,10 +39,6 @@ export async function register(userData) {
     formData.append('enrollment_date', userData.enrollment_date);
     formData.append('CIN', userData.cin_file);
 
-    console.log("Form data entries:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ': ' + (pair[1] instanceof File ? pair[1].name : pair[1]));
-    }
     
     const response = await axios.post(`${API_URL}/register`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }

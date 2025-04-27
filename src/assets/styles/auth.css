@@ -81,7 +81,8 @@
 
 .auth-card {
   width: 100%;
-  max-width: 450px;
+  max-width: 1000px;
+  /* max-width: 450px; */
   background-color: var(--auth-bg-white);
   border-radius: var(--auth-radius-lg);
   box-shadow: var(--auth-shadow-xl);

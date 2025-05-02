@@ -95,11 +95,11 @@ export default function RecentRegistrations() {
                     user.profile_picture.startsWith('https://avatar.iran.liara.run')
                   ? user.profile_picture: `http://localhost:8000/storage/${user.profile_picture}` : 'https://avatar.iran.liara.run/public'
     } 
-                alt={user.user.name} 
+                alt={user.name} 
               />
               <div>
-                <div className="font-medium">{user.user.name}</div>
-                <div className="text-sm text-gray-500">{user.user.email}</div>
+                <div className="font-medium">{user.name}</div>
+                <div className="text-sm text-gray-500">{user.email}</div>
               </div>
             </div>
             

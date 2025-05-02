@@ -5,7 +5,7 @@ import { forwardRef } from "react"
 
 
 const Avatar = forwardRef(({ className = "", src, alt = "Avatar", size = "md", fallback, ...props }, ref) => {
-  // Size styles with dimensions
+  
   const sizeStyles = {
     xs: "h-6 w-6",
     sm: "h-8 w-8",
@@ -14,10 +14,10 @@ const Avatar = forwardRef(({ className = "", src, alt = "Avatar", size = "md", f
     xl: "h-16 w-16",
   }
 
-  // Combine all styles
+  
   const avatarStyles = ["relative inline-block rounded-full overflow-hidden", sizeStyles[size], className].join(" ")
 
-  // Get the initials from the alt text for the fallback
+
   const getInitials = () => {
     if (fallback) return fallback
     return alt
@@ -37,14 +37,13 @@ const Avatar = forwardRef(({ className = "", src, alt = "Avatar", size = "md", f
           fill
           className="object-cover"
           onError={(e) => {
-            // If image fails to load, show fallback
             e.target.style.display = "none"
             e.target.nextSibling.style.display = "flex"
           }}
         />
       ) : null}
 
-      {/* Fallback for when image fails to load or no src provided */}
+      
       <div
         className={`absolute inset-0 flex items-center justify-center bg-slate-200 text-slate-600 ${
           src ? "hidden" : ""

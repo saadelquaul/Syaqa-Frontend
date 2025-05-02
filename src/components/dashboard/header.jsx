@@ -25,14 +25,14 @@ export default function DashboardHeader(props) {
             }}
             aria-label="Menu utilisateur"
           >
-            <Avatar src={getImageUrl(props.user.imagee)} alt="Photo de profil" size="sm" />
+            <Avatar src={getImageUrl(props.user.profile_picture)} alt="Photo de profil" size="sm" />
             <span className="header-username">{props.user.name}</span>
           </button>
 
           {showUserMenu && (
             <div className="dropdown-menu user-dropdown">
               <div className="user-info">
-                <Avatar src={getImageUrl(props.user.imagee)} alt="Photo de profil" size="md" />
+                <Avatar src={getImageUrl(props.user.profile_picture)} alt="Photo de profil" size="md" />
                 <div>
                   <h4>{props.user.name}</h4>
                   <p>{props.user.email}</p>

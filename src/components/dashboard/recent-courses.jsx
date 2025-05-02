@@ -53,7 +53,7 @@ export default function RecentCourses() {
         <li key={course.id} className="bg-white p-3 rounded-md border border-gray-200">
           <div className="flex gap-3">
             { course.image_url ? (
-              <div className="w-33 h-15 flex-shrink-0">
+              <div className="w-25 h-15 flex-shrink-0">
                 <img 
                   src={`http://localhost:8000/storage/${course.image_url}`} 
                   alt={course.title}

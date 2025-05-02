@@ -70,7 +70,7 @@ export default function CategoryActions({ category, onDelete }) {
   }, [showMenu, handleClickOutside])
 
   return (
-    <div className="relative">
+    <div >
       {showConfirmDelete ? (
         <div className="flex items-center space-x-2">
           <button
@@ -107,7 +107,7 @@ export default function CategoryActions({ category, onDelete }) {
           </button>
 
           {showMenu && (
-            <div className="absolute right-5 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+            <div className="absolute right-20 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
               <div className="py-1">
                 <button
                   onClick={handleView}

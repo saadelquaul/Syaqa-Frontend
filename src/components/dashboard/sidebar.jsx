@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useLocation } from "react-router-dom"
-import { Home, BookOpen, FolderTree, Calendar, LogOut, ChevronRight, Menu, X } from "lucide-react"
+import { Home, HelpCircle, BookOpen, FolderTree, Calendar, LogOut, ChevronRight, Menu, X } from "lucide-react"
 
 export default function DashboardSidebar() {
   const location = useLocation()
@@ -33,6 +33,11 @@ export default function DashboardSidebar() {
       href: "/monitor/bookings",
       icon: <Calendar className="sidebar-icon" />,
     },
+    {
+      name: "Quiz & Questions",
+      href: "/monitor/quiz/questions",
+      icon: <HelpCircle className="sidebar-icon" />,
+    }
   ]
 
 

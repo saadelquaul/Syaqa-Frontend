@@ -57,17 +57,7 @@ export default function DashboardSidebar() {
               className={`sidebar-nav-link ${isActive("/admin/pending-users") ? "active" : ""}`}
             >
               <UserCheck className="sidebar-icon" />
-              <span className="sidebar-link-text">Validation Comptes</span>
-            </Link>
-          </li>
-          
-          <li className="sidebar-nav-item">
-            <Link 
-              to="/admin/categories" 
-              className={`sidebar-nav-link ${isActive("/admin/categories") ? "active" : ""}`}
-            >
-              <Grid3X3 className="sidebar-icon" />
-              <span className="sidebar-link-text">Catégories</span>
+              <span className="sidebar-link-text">Validation Candidates</span>
             </Link>
           </li>
 
@@ -88,16 +78,6 @@ export default function DashboardSidebar() {
             >
               <CalendarDays className="sidebar-icon" />
               <span className="sidebar-link-text">Réservations</span>
-            </Link>
-          </li>
-
-          <li className="sidebar-nav-item">
-            <Link 
-              to="/admin/settings" 
-              className={`sidebar-nav-link ${isActive("/admin/settings") ? "active" : ""}`}
-            >
-              <Settings className="sidebar-icon" />
-              <span className="sidebar-link-text">Paramètres</span>
             </Link>
           </li>
         </ul>

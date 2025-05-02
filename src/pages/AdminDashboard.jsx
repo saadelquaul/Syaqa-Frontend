@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, BookOpen, Calendar, CheckCircle2, XCircle, UserCheck } from "lucide-react";
+import { Users, BookOpen, Calendar, CheckCircle2, XCircle, UserCheck, RefreshCw } from "lucide-react";
 import StatsCard from "@/components/dashboard/stats-card";
 import RecentRegistrations from "@/components/dashboard/recent-registrations";
 import RecentCourses from "@/components/dashboard/recent-courses";
@@ -14,6 +14,7 @@ export default function AdminDashboard() {
     pendingUsers: "--",
     bookingsCount: "--"
   });
+  const [reFetch, setReFetch] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -41,12 +42,16 @@ export default function AdminDashboard() {
     };
     
     fetchDashboardStats();
-  }, []);
+  }, [reFetch]);
 
   return (
     <>
-      <h1 className="dashboard-title p-5">
+      <h1 className="dashboard-title p-5 flex items-center justify-between">
         Tableau de bord administrateur
+        <RefreshCw 
+              className="cursor-pointer hover:scale-105 transition" 
+              onClick={()=>{setReFetch(prev => !prev)}}
+            />
       </h1>
       
       <div className="stats-grid">

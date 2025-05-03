@@ -25,6 +25,8 @@ export default function QuizQuestionsPage() {
       const response = await axios.get('http://localhost:8000/api/quiz-questions', {
         headers: getAuthHeader()
       });
+
+      console.log("Fetched questions:", response.data.data);
       
       setQuestions(response.data.data || []);
     } catch (err) {
@@ -117,9 +119,6 @@ export default function QuizQuestionsPage() {
                       Question
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Image
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Réponses
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -138,25 +137,9 @@ export default function QuizQuestionsPage() {
                           {question.question}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {question.image_url ? (
-                          <div className="h-16 w-16 bg-gray-100 rounded overflow-hidden">
-                            <img 
-                              src={`http://localhost:8000/storage/${question.image_url}`} 
-                              alt="Question" 
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                        ) : (
-                          <span className="text-gray-400 text-sm">Aucune image</span>
-                        )}
-                      </td>
                       <td className="px-6 py-4">
                         <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">
                           {question.correct_answer?.text || "1 correcte"}
-                        </span>
-                        <span className="ml-2 text-gray-500 text-sm">
-                          + {question.answers?.length - 1 || 3} incorrectes
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -183,11 +166,6 @@ export default function QuizQuestionsPage() {
                           </div>
                         ) : (
                           <div className="flex justify-end gap-2">
-                            <Link to={`/monitor/quiz/questions/${question.id}`}>
-                              <Button size="sm" className="bg-slate-200 hover:bg-slate-300">
-                                <Eye size={16} />
-                              </Button>
-                            </Link>
                             <Link to={`/monitor/quiz/questions/${question.id}/edit`}>
                               <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
                                 <Edit size={16} />

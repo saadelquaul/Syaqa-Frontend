@@ -9,7 +9,7 @@ import MonitorDashboardLayout from './components/pages/Monitor/layout';
 import { Toaster } from 'react-hot-toast';
 import QuizQuestionsPage from './components/pages/Monitor/quiz/Questions';
 import CreateQuizQuestionPage from './components/pages/Monitor/quiz/CreateQuestion';
-
+import EditQuizQuestionPage from './components/pages/Monitor/quiz/EditQuestion';
 
 import LogoutPage from '@/pages/Logout';
 
@@ -169,6 +169,11 @@ function App() {
           <Route path="/monitor/quiz/questions/create" element={
             <MonitorDashboardLayout>
               <CreateQuizQuestionPage />
+            </MonitorDashboardLayout>
+          } />
+          <Route path="/monitor/quiz/questions/:id/edit" element={
+            <MonitorDashboardLayout>
+              <EditQuizQuestionPage />
             </MonitorDashboardLayout>
           } />
         </Routes>

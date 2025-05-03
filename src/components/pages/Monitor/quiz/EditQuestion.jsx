@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, HelpCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import { ArrowLeft, HelpCircle, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,9 +8,11 @@ import axios from "axios";
 import { getAuthHeader } from "@/utils/auth";
 import toast from "react-hot-toast";
 
-export default function CreateQuizQuestionPage() {
+export default function EditQuizQuestionPage() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   
   const [formData, setFormData] = useState({
@@ -31,6 +33,48 @@ export default function CreateQuizQuestionPage() {
     correct_answer: "",
     general: ""
   });
+
+  useEffect(() => {
+    const fetchQuestion = async () => {
+      try {
+        setIsLoading(true);
+        const loadingToast = toast.loading("Chargement de la question...");
+        
+        const response = await axios.get(`http://localhost:8000/api/quiz-questions/${id}`, {
+          headers: getAuthHeader()
+        });
+        
+        const questionData = response.data.data;
+        
+        setFormData({
+          question: questionData.question || "",
+          option_a: questionData.option_a || "",
+          option_b: questionData.option_b || "",
+          option_c: questionData.option_c || "",
+          option_d: questionData.option_d || "",
+          correct_answer: questionData.correct_answer || ""
+        });
+        
+        
+        toast.success("Question chargée avec succès", { id: loadingToast });
+      } catch (err) {
+        console.error("Failed to fetch question:", err);
+        toast.error("Erreur lors du chargement de la question");
+        setError(prev => ({
+          ...prev,
+          general: "Impossible de charger les données de la question. Veuillez réessayer."
+        }));
+        
+        setTimeout(() => {
+          navigate("/monitor/quiz/questions");
+        }, 3000);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchQuestion();
+  }, [id, navigate]);
 
   const handleQuestionChange = (e) => {
     setFormData(prev => ({
@@ -64,7 +108,6 @@ export default function CreateQuizQuestionPage() {
       setError(prev => ({ ...prev, correct_answer: "" }));
     }
   };
-
 
   const validateForm = () => {
     let hasError = false;
@@ -111,11 +154,13 @@ export default function CreateQuizQuestionPage() {
     
     if (!validateForm()) return;
     
-    setIsLoading(true);
-    const loadingToast = toast.loading("Enregistrement de la question...");
+    setIsSubmitting(true);
+    const loadingToast = toast.loading("Mise à jour de la question...");
     
     try {
       const apiFormData = new FormData();
+      apiFormData.append("_method", "PUT");
+      
       apiFormData.append("question", formData.question);
       apiFormData.append("option_a", formData.option_a);
       apiFormData.append("option_b", formData.option_b);
@@ -131,8 +176,8 @@ export default function CreateQuizQuestionPage() {
       apiFormData.append("correct_answer", formData.correct_answer);
       
       
-      const response = await axios.post(
-        "http://localhost:8000/api/quiz-questions",
+       await axios.post(
+        `http://localhost:8000/api/quiz-questions/${id}`,
         apiFormData,
         {
           headers: {
@@ -141,13 +186,11 @@ export default function CreateQuizQuestionPage() {
           }
         }
       );
-
-      console.log("Question created successfully:", response.data);
       
-      toast.success("Question ajoutée avec succès", { id: loadingToast });
+      toast.success("Question mise à jour avec succès", { id: loadingToast });
       navigate("/monitor/quiz/questions");
     } catch (err) {
-      console.error("Erreur lors de la création de la question:", err);
+      console.error("Erreur lors de la mise à jour de la question:", err);
       
       if (err.response?.data?.errors) {
         const apiErrors = err.response.data.errors;
@@ -167,11 +210,20 @@ export default function CreateQuizQuestionPage() {
         }));
       }
       
-      toast.error("Erreur lors de l'ajout de la question", { id: loadingToast });
+      toast.error("Erreur lors de la mise à jour de la question", { id: loadingToast });
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
+        <p className="text-gray-600">Chargement de la question...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
@@ -180,14 +232,14 @@ export default function CreateQuizQuestionPage() {
           <ArrowLeft size={16} />
           <span>Retour aux questions</span>
         </Link>
-        <h1 className="dashboard-title">Ajouter une nouvelle question</h1>
+        <h1 className="dashboard-title">Modifier la question</h1>
       </div>
 
       <Card className="max-w-4xl mx-auto mb-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <HelpCircle className="h-5 w-5 text-blue-500" />
-            Nouvelle question de quiz
+            Modification de la question
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -219,7 +271,6 @@ export default function CreateQuizQuestionPage() {
                 )}
               </div>
 
-              
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-gray-700">
                   Options de réponse
@@ -351,9 +402,9 @@ export default function CreateQuizQuestionPage() {
                 <Button
                   type="submit"
                   className="bg-blue-500 hover:bg-blue-600 text-white"
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                 >
-                  {isLoading ? "Enregistrement..." : "Enregistrer la question"}
+                  {isSubmitting ? "Enregistrement..." : "Mettre à jour la question"}
                 </Button>
               </div>
             </div>

@@ -40,7 +40,7 @@ export default function DashboardHeader(props) {
               </div>
               <ul className="dropdown-menu-items">
                 <li>
-                  <Link to="/monitor/profile">Mon profil</Link>
+                  <Link to="/account">Mon profil</Link>
                 </li>
                 <li>
                   <Link to="/logout">Déconnexion</Link>

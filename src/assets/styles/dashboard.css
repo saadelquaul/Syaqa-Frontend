@@ -152,12 +152,12 @@
 
 .sidebar-nav-link:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: #f8fafc;
+  color: black;
 }
 
 .sidebar-nav-link.active {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #f8fafc;
+  background-color: #bcbcbc;
+  color: black;
   font-weight: 500;
   border-left-color: var(--dashboard-primary);
 }

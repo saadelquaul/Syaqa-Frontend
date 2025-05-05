@@ -10,7 +10,9 @@ export async function login(email, password) {
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
+      console.log('user', response.data.user,'\n',JSON.stringify(response.data.user))
       return { success: true, user: response.data.user };
+
     }
     
     return { success: false, error: "No token received" };

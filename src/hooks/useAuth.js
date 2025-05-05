@@ -34,6 +34,7 @@ export function useAuth() {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchUser();

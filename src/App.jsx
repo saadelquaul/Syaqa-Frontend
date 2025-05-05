@@ -31,6 +31,13 @@ import AdminCourseDetailsPage from '@/components/pages/Admin/courses/Details';
 import AdminDashboardLayout from '@/components/pages/Admin/layout';
 import AdminDashboard from '@/pages/AdminDashboard';
 
+import CandidateDashboardLayout from './components/pages/candidate/layout';
+import CandidateCoursesPage from './components/pages/Candidate/courses/CoursesList';
+import CourseViewPage from './components/pages/Candidate/courses/CourseView';
+import QuizDashboardPage from './components/pages/Candidate/quiz/QuizDashboard';
+import TakeQuizPage from './components/pages/Candidate/quiz/TakeQuiz';
+import CandidateDashboard from './pages/CandidateDashboard';
+import AccountPage from './pages/Account';
 function App() {
   return (
     <>
@@ -176,6 +183,46 @@ function App() {
               <EditQuizQuestionPage />
             </MonitorDashboardLayout>
           } />
+
+          <Route path="/candidate/home" element={
+            <CandidateDashboardLayout>
+              <CandidateDashboard />
+            </CandidateDashboardLayout>
+          } />
+
+          {/* Candidate courses routes */}
+          <Route path="/candidate/courses" element={
+            <CandidateDashboardLayout>
+              <CandidateCoursesPage />
+            </CandidateDashboardLayout>
+          } />
+          <Route path="/candidate/courses/:id" element={
+            <CandidateDashboardLayout>
+              <CourseViewPage />
+            </CandidateDashboardLayout>
+          } />
+          <Route path="/candidate/courses/:id/:lessonId" element={
+            <CandidateDashboardLayout>
+              <CourseViewPage />
+            </CandidateDashboardLayout>
+          } />
+
+          {/* Quiz routes */}
+          <Route path="/candidate/quiz" element={
+            <CandidateDashboardLayout>
+              <QuizDashboardPage />
+            </CandidateDashboardLayout>
+          } />
+          <Route path="/candidate/quiz/take" element={
+            <CandidateDashboardLayout>
+              <TakeQuizPage />
+            </CandidateDashboardLayout>
+          } />
+        <Route path="/account" element={
+  
+            <AccountPage />
+          
+        } />
         </Routes>
       </Router>
     </>

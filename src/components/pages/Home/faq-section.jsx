@@ -60,12 +60,7 @@ export default function FaqSection() {
           ))}
         </div>
 
-        <div className="faq-footer">
-          <p>Vous avez d&apos;autres questions ?</p>
-          <Link to="contact" className="btn btn-secondary">
-            Contactez-nous
-          </Link>
-        </div>
+        
       </div>
     </section>
   )

@@ -12,11 +12,8 @@ export default function HeroSection() {
             avec des cours interactifs, des quiz et un support personnalisé.
           </p>
           <div className="hero-buttons">
-            <Link href="#register" className="btn btn-primary btn-lg">
+            <Link to="/register" className="btn btn-primary btn-lg">
               Commencer gratuitement
-            </Link>
-            <Link href="#courses" className="btn btn-outline btn-lg">
-              Découvrir nos cours
             </Link>
           </div>
           <div className="hero-stats">

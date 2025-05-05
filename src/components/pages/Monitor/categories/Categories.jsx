@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import axios from "axios"
 import CategoryActions from "@/components/dashboard/category-actions"
 import { getAuthHeader } from "@/utils/auth"
+import toast from "react-hot-toast" 
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([])
@@ -24,6 +25,7 @@ export default function CategoriesPage() {
       } catch (err) {
         console.error("Failed to fetch categories:", err)
         setError("Impossible de charger les catégories. Veuillez réessayer plus tard.")
+        toast.error("Erreur lors du chargement des catégories")
       } finally {
         setIsLoading(false)
       }
@@ -36,6 +38,7 @@ export default function CategoriesPage() {
     setCategories((prevCategories) =>
       prevCategories.filter((category) => category.id !== deletedCategoryId)
     )
+    toast.success("Catégorie supprimée avec succès")
   }
 
 

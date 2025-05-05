@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import axios from "axios"
 import { getAuthHeader } from "@/utils/auth"
+import toast from "react-hot-toast"
 
 export default function CreateCategoryPage() {
   const navigate = useNavigate();
@@ -100,6 +101,8 @@ export default function CreateCategoryPage() {
     }
     
     setIsLoading(true);
+
+    const loadingToast = toast.loading("Création de la catégorie en cours...");
     
     try {
       const apiFormData = new FormData();
@@ -117,7 +120,8 @@ export default function CreateCategoryPage() {
           }
         }
       );
-      
+
+      toast.success("Catégorie créée avec succès", { id: loadingToast });
       navigate("/monitor/categories");
     } catch (err) {      
       if (err.response?.data?.errors) {

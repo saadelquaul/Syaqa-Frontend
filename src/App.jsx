@@ -13,7 +13,8 @@ import EditQuizQuestionPage from './components/pages/Monitor/quiz/EditQuestion';
 
 import LogoutPage from '@/pages/Logout';
 import NotFound from '@/pages/NotFound';
-
+import AboutPage from "@/pages/About";
+import ContactPage from "@/pages/Contact";
 
 import CategoriesPage from './components/pages/Monitor/categories/Categories';
 import CreateCategoryPage from './components/pages/Monitor/categories/Create';
@@ -89,7 +90,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           <Route path="/logout" element={<LogoutPage />} />
           <Route path="/" element={<Home />} />

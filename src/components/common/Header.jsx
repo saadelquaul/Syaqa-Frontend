@@ -58,21 +58,6 @@ export default function Header() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/courses" className="nav-link">
-                Cours
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/exams" className="nav-link">
-                Examens
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/quizzes" className="nav-link">
-                Quiz
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link to="/about" className="nav-link">
                 À propos
               </Link>

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import axios from "axios"
 import { getAuthHeader } from "@/utils/auth"
 
+
 export default function EditCategoryPage() {
   const { id } = useParams();
   const navigate = useNavigate();

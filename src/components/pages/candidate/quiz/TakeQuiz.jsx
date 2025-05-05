@@ -226,7 +226,7 @@ export default function TakeQuizPage() {
                             <div className="flex flex-col items-center gap-3 pt-4 border-t">
                                 <Button
                                     className="w-full max-w-xs bg-blue-500 hover:bg-blue-600 text-white"
-                                    onClick={() => navigate('/candidate/quiz/history')}
+                                    onClick={() => navigate('/candidate/quiz')}
                                 >
                                     Voir l'historique des quiz
                                 </Button>
@@ -234,7 +234,6 @@ export default function TakeQuizPage() {
                                     variant="outline"
                                     className="w-full max-w-xs"
                                     onClick={() => {
-                                        // Reset and restart quiz
                                         setAnswers({});
                                         setCurrentQuestionIndex(0);
                                         setQuizSubmitted(false);
@@ -378,6 +377,7 @@ export default function TakeQuizPage() {
                                 ) : (
                                     <Button
                                         onClick={() => navigateToQuestion(currentQuestionIndex + 1)}
+                                        disabled={!answers[currentQuestion.id]}
                                         className="bg-blue-500 hover:bg-blue-600 text-white"
                                     >
                                         Question suivante
@@ -406,7 +406,7 @@ export default function TakeQuizPage() {
                                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                             }
                     `}
-                                        onClick={() => navigateToQuestion(index)}
+                                        
                                     >
                                         {index + 1}
                                     </button>

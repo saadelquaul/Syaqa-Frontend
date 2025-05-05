@@ -97,7 +97,7 @@ export default function AccountPage() {
             toast.error("L'image ne doit pas dépasser 5 MB");
             return;
         }
-
+        
         setSelectedImage(file);
 
 
@@ -112,7 +112,6 @@ export default function AccountPage() {
         if (!selectedImage) return;
 
         setIsUploadingImage(true);
-        const loadingToast = toast.loading("Mise à jour de votre photo de profil...");
 
         try {
             const formData = new FormData();
@@ -137,13 +136,10 @@ export default function AccountPage() {
             setSelectedImage(null);
             setImagePreview(null);
 
-            toast.success("Photo de profil mise à jour avec succès", { id: loadingToast });
         } catch (err) {
             console.error("Failed to upload profile picture:", err);
             
-            const errorMessage = err.response?.data?.message || 
-                                "Impossible de mettre à jour votre photo de profil";
-            toast.error(errorMessage, { id: loadingToast });
+            toast.error("Impossible de mettre à jour votre photo de profil");
         } finally {
             setIsUploadingImage(false);
         }

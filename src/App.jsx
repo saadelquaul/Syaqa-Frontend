@@ -12,6 +12,7 @@ import CreateQuizQuestionPage from './components/pages/Monitor/quiz/CreateQuesti
 import EditQuizQuestionPage from './components/pages/Monitor/quiz/EditQuestion';
 
 import LogoutPage from '@/pages/Logout';
+import NotFound from '@/pages/NotFound';
 
 
 import CategoriesPage from './components/pages/Monitor/categories/Categories';
@@ -277,6 +278,9 @@ function App() {
           </ProtectedRoute>
           
         } />
+
+<Route path="*" element={<NotFound />} />
+
         </Routes>
       </Router>
     </>

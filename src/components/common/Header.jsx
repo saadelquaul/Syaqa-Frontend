@@ -13,6 +13,11 @@ export default function Header() {
   const navRef = useRef(null)
   const [showUserMenu, setShowUserMenu] = useState(false)
 
+
+  const isActive = (path) => {
+      return location.pathname === path || location.pathname.startsWith(`${path}/`)
+    }
+    
   const getImageUrl = (imagePath) => {
     if (!imagePath) return AvatarImage;
 
@@ -52,17 +57,17 @@ export default function Header() {
 
         <nav className={`main-nav ${mobileMenuOpen ? "active" : ""}`} ref={navRef}>
           <ul className="nav-menu">
-            <li className="nav-item active">
+            <li className={`nav-item ${isActive("/") ? "active" : ""}`}>
               <Link to="/" className="nav-link">
                 Accueil
               </Link>
             </li>
-            <li className="nav-item">
+            <li className={`nav-item ${isActive("/about") ? "active" : ""}`}>
               <Link to="/about" className="nav-link">
                 À propos
               </Link>
             </li>
-            <li className="nav-item">
+            <li className={`nav-item ${isActive("/contact") ? "active" : ""}`}>
               <Link to="/contact" className="nav-link">
                 Contact
               </Link>

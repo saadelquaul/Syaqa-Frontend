@@ -288,11 +288,11 @@ export default function AccountPage() {
                                     Photo de profil
                                 </label>
                                 <div className="flex items-center space-x-6">
-                                    <div className="relative">
+                                    <div className="relative group">
                                         <img 
                                             src={imagePreview || getImageUrl(userDetails?.profile_picture)} 
                                             alt="Profile" 
-                                            className="h-24 w-24 rounded-full object-cover border-2 border-gray-200"
+                                            className="h-28 w-28 overflow-hidden rounded-full object-cover border-2 border-gray-200 shadow-md transition-all duration-300 ease-in-out hover:shadow-lg"
                                         />
                                         <button
                                             type="button"
@@ -482,11 +482,11 @@ export default function AccountPage() {
                     ) : (
                         <>
                             <div className="flex items-center gap-5 mb-6">
-                                <div className="relative">
+                                <div className="relative group">
                                     <img 
                                         src={getImageUrl(userDetails?.profile_picture)} 
                                         alt="Avatar" 
-                                        className="h-28 w-28 rounded-full object-cover border-2 border-gray-200" 
+                                        className="h-35 w-35 rounded-full object-cover border-2 border-gray-200 shadow-md transition-all duration-300 ease-in-out hover:shadow-lg" 
                                     />
                                     <button
                                         type="button"

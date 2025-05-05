@@ -109,7 +109,7 @@ export default function Header() {
               </div>
               <ul className="dropdown-menu-items">
                 <li>
-                  <Link to="/monitor/profile">Mon profil</Link>
+                  <Link to="/account">Mon profil</Link>
                 </li>
                 <li>
                   <Link to = {`/${user.role}/home`} >Dashboard</Link>

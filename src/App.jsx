@@ -88,139 +88,193 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+
           <Route path="/logout" element={<LogoutPage />} />
-          {/* <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <DashboardCondidat />
-            </ProtectedRoute>
-          } /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/monitor/home" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <DashboardMoniteur />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/monitor/categories" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <CategoriesPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/monitor/categories/create" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <CreateCategoryPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/monitor/categories/:id/edit" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <EditCategoryPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/monitor/categories/:id" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <CategoryDetailsPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
 
           <Route path="/monitor/courses" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <CoursesPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/monitor/courses/create" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <CreateCoursePage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/monitor/courses/:id/edit" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <EditCoursePage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/monitor/courses/:id" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <CourseDetailsPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
 
 
           <Route path="/admin/home" element={
+            <ProtectedRoute allowedRole="admin">
             <AdminDashboardLayout>
               <AdminDashboard />
             </AdminDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/admin/users" element={
+            <ProtectedRoute allowedRole="admin">
             <AdminDashboardLayout>
               <AdminUsersPage />
             </AdminDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/admin/pending-users" element={
+            <ProtectedRoute allowedRole="admin">
             <AdminDashboardLayout>
               <PendingUsersPage />
             </AdminDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/admin/courses" element={
+            <ProtectedRoute allowedRole="admin">
             <AdminDashboardLayout>
               <AdminCoursesPage />
             </AdminDashboardLayout>
+            </ProtectedRoute>
           } />
+
           <Route path="/admin/courses/:id" element={
+            <ProtectedRoute allowedRole="admin">
             <AdminDashboardLayout>
               <AdminCourseDetailsPage />
             </AdminDashboardLayout>
+            </ProtectedRoute>
           } />
 
           <Route path="/monitor/quiz/questions" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <QuizQuestionsPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/monitor/quiz/questions/create" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <CreateQuizQuestionPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/monitor/quiz/questions/:id/edit" element={
+            <ProtectedRoute allowedRole="monitor">
             <MonitorDashboardLayout>
               <EditQuizQuestionPage />
             </MonitorDashboardLayout>
+            </ProtectedRoute>
           } />
 
           <Route path="/candidate/home" element={
+            <ProtectedRoute allowedRole="candidate">
             <CandidateDashboardLayout>
               <CandidateDashboard />
             </CandidateDashboardLayout>
+            </ProtectedRoute>
           } />
 
-          {/* Candidate courses routes */}
           <Route path="/candidate/courses" element={
+            <ProtectedRoute allowedRole="candidate">
             <CandidateDashboardLayout>
               <CandidateCoursesPage />
             </CandidateDashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/candidate/courses/:id" element={
+            <ProtectedRoute allowedRole="candidate">
             <CandidateDashboardLayout>
               <CourseViewPage />
             </CandidateDashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/candidate/courses/:id/:lessonId" element={
+            <ProtectedRoute allowedRole="candidate">
             <CandidateDashboardLayout>
               <CourseViewPage />
             </CandidateDashboardLayout>
+            </ProtectedRoute>
           } />
 
-          {/* Quiz routes */}
           <Route path="/candidate/quiz" element={
+            <ProtectedRoute allowedRole="candidate">
             <CandidateDashboardLayout>
               <QuizDashboardPage />
             </CandidateDashboardLayout>
+            </ProtectedRoute>
           } />
           <Route path="/candidate/quiz/take" element={
+            <ProtectedRoute allowedRole="candidate">
             <CandidateDashboardLayout>
               <TakeQuizPage />
             </CandidateDashboardLayout>
+            </ProtectedRoute>
           } />
         <Route path="/account" element={
-  
+          <ProtectedRoute allowedRole="*">
             <AccountPage />
+          </ProtectedRoute>
           
         } />
         </Routes>

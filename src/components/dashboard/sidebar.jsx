@@ -29,11 +29,6 @@ export default function DashboardSidebar() {
       icon: <FolderTree className="sidebar-icon" />,
     },
     {
-      name: "Réservations",
-      href: "/monitor/bookings",
-      icon: <Calendar className="sidebar-icon" />,
-    },
-    {
       name: "Quiz & Questions",
       href: "/monitor/quiz/questions",
       icon: <HelpCircle className="sidebar-icon" />,

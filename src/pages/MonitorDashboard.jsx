@@ -46,11 +46,6 @@ export default function MonitorDashboard() {
           value={isLoadingCourses ? "..." : coursesCount}
           icon={<BookOpen className="stats-icon" />}
         />
-        <StatsCard
-          title="Réservations"
-          value="42"
-          icon={<Calendar className="stats-icon" />}
-        />
       </div>
 
       <div className="dashboard-grid">

@@ -2,8 +2,14 @@ import { Link } from "react-router-dom"
 import LoginForm from "@/components/auth/login-form"
 import AuthLayout from "@/components/auth/auth-layout"
 import bgImage from "@/assets/images/bg1.jpg"
+import { isLoggedIn } from "@/utils/auth"
+import { Navigate } from "react-router-dom"
 
 export default function LoginPage() {
+
+  if(isLoggedIn()) {
+      return <Navigate to={`/`} />;
+  }
   return (
     <AuthLayout
       title="Connexion à Syaqa"

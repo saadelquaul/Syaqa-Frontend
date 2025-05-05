@@ -2,8 +2,14 @@ import { Link } from "react-router-dom"
 import RegisterForm from "@/components/auth/register-form"
 import AuthLayout from "@/components/auth/auth-layout"
 import bgImage from "@/assets/images/bg1.jpg"
+import { isLoggedIn } from "@/utils/auth"
+import { Navigate } from "react-router-dom"
 
 export default function RegisterPage() {
+
+  if(isLoggedIn()) {
+      return <Navigate to={`/`} />;
+  }
   return (
     <AuthLayout
       title="Créer un compte condidat"

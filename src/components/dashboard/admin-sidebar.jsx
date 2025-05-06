@@ -70,16 +70,6 @@ export default function DashboardSidebar() {
               <span className="sidebar-link-text">Cours</span>
             </Link>
           </li>
-
-          <li className="sidebar-nav-item">
-            <Link 
-              to="/admin/bookings" 
-              className={`sidebar-nav-link ${isActive("/admin/bookings") ? "active" : ""}`}
-            >
-              <CalendarDays className="sidebar-icon" />
-              <span className="sidebar-link-text">Réservations</span>
-            </Link>
-          </li>
         </ul>
       </nav>
       

@@ -12,7 +12,6 @@ export default function AdminDashboard() {
     usersCount: "--",
     coursesCount: "--",
     pendingUsers: "--",
-    bookingsCount: "--"
   });
   const [reFetch, setReFetch] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +31,6 @@ export default function AdminDashboard() {
           usersCount: data.users_count || 0,
           coursesCount: data.courses_count || 0,
           pendingUsers: data.pending_users_count || 0,
-          bookingsCount: data.bookings_count || 0
         });
       } catch (error) {
         console.error("Failed to fetch dashboard stats:", error);
@@ -71,12 +69,6 @@ export default function AdminDashboard() {
           title="Comptes en attente"
           value={isLoading ? "..." : stats.pendingUsers}
           icon={<UserCheck className="stats-icon" />}
-        />
-        
-        <StatsCard
-          title="Réservations"
-          value={isLoading ? "..." : stats.bookingsCount}
-          icon={<Calendar className="stats-icon" />}
         />
       </div>
 

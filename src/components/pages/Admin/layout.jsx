@@ -21,6 +21,7 @@ export default function AdminDashboardLayout({ children }) {
   }
 
   if(user.role !== "admin") {
+    
     return <Navigate to="/" replace />;
   }
   

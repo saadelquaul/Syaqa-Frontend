@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getAuthHeader } from '@/utils/auth';
+import { getAuthHeader, logout } from '@/utils/auth';
+
 
 export function useAuth() {
   const [user, setUser] = useState(null);
@@ -22,12 +23,15 @@ export function useAuth() {
         }
       });
 
+
       setUser(response.data.user);
       setIsAdmin(response.data.user.isAdmin);
       setIsMonitor(response.data.user.isMonitor);
       setIsCandidate(response.data.user.isCandidate); 
       setError(null);
     } catch (err) {
+        logout();
+      
       setError('Failed to fetch user data');
       console.error("Auth error:", err);
     } finally {

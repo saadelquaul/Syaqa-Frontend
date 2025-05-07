@@ -16,8 +16,7 @@ export function UserListItem({
         <div className="flex items-center">
           <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
             <img
-              src={user.role === 'admin' ? 'https://avatar.iran.liara.run/public/job/operator/male'
-                : user.profile_picture ? user.profile_picture.startsWith('https://avatar.iran.liara.run') ?
+              src={user.profile_picture ? user.profile_picture.startsWith('https://avatar.iran.liara.run') ?
                   user.profile_picture :
                    `http://localhost:8000/storage/${user.profile_picture}` :
                     DefaultProfileImage

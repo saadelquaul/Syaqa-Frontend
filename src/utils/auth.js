@@ -10,8 +10,7 @@ export async function login(email, password) {
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      console.log('user', response.data.user,'\n',JSON.stringify(response.data.user))
-      return { success: true, user: response.data.user };
+        return { success: true, user: response.data.user };
 
     }
     
@@ -59,15 +58,15 @@ export async function register(userData) {
 
 export async function logout() {
 
- const response = await axios.post(`${API_URL}/logout`, {}, {
+    axios.post(`${API_URL}/logout`, {}, {
     headers: getAuthHeader()
   });
-  if( response.status === 200) {
+  
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   
     window.location.href = '/login';
-  }
+  
   
 }
 
